@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nacionalidade</title>
+</head>
+<body>
+    <h1> Brasileiro ou não?</h1>
+    <p> Digite onde voçê nasceu: <input type = "text" id ="dado"></p>
+    <input id="click" type="button" value="Verifique" onclick="verificar()">
+    <div id = resp>
+
+    <script>
+        function verificar() {
+            var nasc = window.document.querySelector('input#dado')
+            var resp = window.document.querySelector('div#resp')
+            var nasci = String(nasc.value)
+            if (nasci == "Brasil" || nasci == "brasil") {
+                resp.innerHTML = `<p>Voçê é <strong>brasileiro</strong>.</p>`
+            } else {
+                resp.innerHTML= `<p>Voçê é <strong>gringo</strong>.</p>`
+            }
+        }
+
+    </script>
+    
+</body>
+</html>
