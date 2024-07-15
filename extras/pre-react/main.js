@@ -137,10 +137,98 @@ console.log(indexPrimeiroPar)
 //REDUCE => permite formar uma nova estrutura de dados, totalmente livre, a partir de um array recebido, tendo como parâmetros, uma arrow function, esta tem como parâmetro um acumulador (acc), que recebe o valor a cada interação, e o item, assim como os outros métodos, que recebe o valor de cada item do array, além disso, no outro parâmetro do reduce é preciso definir um valor inicial para a variável que será criada, um número seria 0, uma string seria '', um outro array seria [], um obj seria {}, também é esperado que o acc seja retornado a cada interação do método.
 
 //ESTRUTURA BÁSICA
-//const soma = array.reduce((acc, item) => {}, 0)
+//const soma = array.reduce((acc, item) => {return acc}, 0)
 
 const soma = array.reduce((acc, item) => {
   return acc + item
 }, 0)
 
 console.log(soma)
+
+//PROMISES
+//as promises são uma forma de tratar uma chamada a um banco de dados ou a uma API, por exemplo, que são ações que levam um tempo para serem resolvidas e podem ou não terem um retorno, e em caso de um não retorno (erro), as promises são capazes de tratá-lo
+
+const somaDois = (a, b) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(a+b)
+      reject(a-b)
+    }, 2000)
+  })
+}
+
+somaDois(1, 3)
+.then(soma => {
+  console.log(soma)
+})
+.catch(console.error())
+
+//obeserve que tudo que aparece depos ocorrerá antes da função somaDois, pois ela é uma promise que sempre levará 2segundos
+
+//FETCH
+//usado para realizar aquisições http e possui caráter de uma promise
+
+fetch('https://api.github.com/users/allanfpcruz')
+  .then(response => {
+    return response.json()
+  })
+  .then(resp => {
+    console.log(resp)
+  })
+  .catch(error => {
+    console.log(error)
+  })
+  .finally(() => {
+    console.log('terminou')
+  })
+
+
+//o finally serve para realizar alguma ação sempre no final da promise, independente se der certo ou não
+//obs: funções json() e text() tambbém são promises e devem ser tratadas com .then
+
+//ASYNC AWAIT
+
+//async declara uma função como assíncrona, logo, todas as sua variáveis em bloco devem receber uma await
+//para realizar o tratamento de erros e finally, usar try-catch-finally
+
+async function buscaGitHub() {
+  try {
+    const response = await fetch('https://api.github.com/users/allanfpcruz')
+    const respoJson = await response.json()
+    return respoJson.login
+  } catch (erro) {
+    console.log(erro)
+  } finally {
+    console.log('terminou async await')
+  }
+}
+
+//como o que acontece abaixo, todo retorno de uma função async deve ser tratado como uma promise
+
+buscaGitHub().then(login => {
+  console.log(login)
+})
+
+//ES MODULES
+
+//possibilidade de importar e exportar variáveis e funções de arquivos de diversas maneiras
+
+import { sub as subtracao, subAlt } from './lib/sub.js'
+
+console.log(subtracao(1, 2))
+
+//named export => quando a exportação e importação acontece com os mesmos nomes nos dois arquivos (possível alterar como a palavra reservada as)
+
+import * as math from './lib/math.js'
+console.log(math.PI)
+console.log(math.soma(1, 2))
+
+//export default => quando uma arquivo exporta somente um elemento, é possível usar o export default e importar o elemento sem chaves e usando um outro nome (não recomendável)
+
+//também é possível usar um arquivo separado para manejar as importações (como o que faz o arquivo travel.js) 
+
+import { subtracoes } from './lib/travel.js'
+
+console.log(subtracoes.subAlt(3, 4))
+
+//essa ultima parte ficou meio bagunçada, espero que dê para entender
